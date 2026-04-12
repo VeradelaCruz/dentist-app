@@ -1,0 +1,181 @@
+// Script de verificación y consultas útiles
+// Use: mongosh < verify-test-data.mongodb
+
+use doctor_db;
+
+console.log("\n╔════════════════════════════════════════════╗");
+console.log("║  VERIFICACIÓN DE DATOS DE PRUEBA           ║");
+console.log("╚════════════════════════════════════════════╝\n");
+
+// ============================================
+// 1. CONTEO DE DOCUMENTOS
+// ============================================
+console.log("📊 CONTEO DE DOCUMENTOS:");
+console.log("-".repeat(40));
+
+const dentistCount = db.dentists.countDocuments();
+const patientCount = db.patients.countDocuments();
+const appointmentCount = db.appointments.countDocuments();
+const treatmentCount = db.treatments.countDocuments();
+const billCount = db.bills.countDocuments();
+
+console.log(`✅ Dentistas: ${dentistCount}`);
+console.log(`✅ Pacientes: ${patientCount}`);
+console.log(`✅ Citas: ${appointmentCount}`);
+console.log(`✅ Tratamientos: ${treatmentCount}`);
+console.log(`✅ Facturas: ${billCount}`);
+console.log("-".repeat(40));
+console.log(`TOTAL: ${dentistCount + patientCount + appointmentCount + treatmentCount + billCount} documentos\n`);
+
+// ============================================
+// 2. INFORMACIÓN DE DENTISTAS
+// ============================================
+console.log("👨‍⚕️ DENTISTAS REGISTRADOS:");
+console.log("-".repeat(40));
+
+db.dentists.find({}, { firstName: 1, lastName: 1, specialization: 1, email: 1 }).forEach(doc => {
+    console.log(`  ${doc.firstName} ${doc.lastName} - ${doc.specialization} (${doc.email})`);
+});
+console.log();
+
+// ============================================
+// 3. INFORMACIÓN DE PACIENTES
+// ============================================
+console.log("👤 PACIENTES REGISTRADOS:");
+console.log("-".repeat(40));
+
+db.patients.find({}, { patientId: 1, name: 1, surname: 1, email: 1 }).limit(5).forEach(doc => {
+    console.log(`  ${doc.patientId}: ${doc.name} ${doc.surname} (${doc.email})`);
+});
+console.log(`  ... y ${Math.max(0, patientCount - 5)} más\n`);
+
+// ============================================
+// 4. CITAS PRÓXIMAS
+// ============================================
+console.log("📅 CITAS PRÓXIMAS:");
+console.log("-".repeat(40));
+
+db.appointments.find({}, { appointmentId: 1, appointmentDateTime: 1, reason: 1, status: 1 }).limit(5).forEach(doc => {
+    console.log(`  ${doc.appointmentId}: ${doc.appointmentDateTime} - ${doc.reason} [${doc.status}]`);
+});
+console.log(`  ... y ${Math.max(0, appointmentCount - 5)} más\n`);
+
+// ============================================
+// 5. ESTADO DE PAGOS
+// ============================================
+console.log("💰 ESTADO DE PAGOS:");
+console.log("-".repeat(40));
+
+const paymentStats = db.bills.aggregate([
+    { $group: { _id: "$status", count: { $sum: 1 }, totalAmount: { $sum: "$totalAmount" } } }
+]).toArray();
+
+paymentStats.forEach(stat => {
+    console.log(`  ${stat._id}: ${stat.count} facturas (€${stat.totalAmount.toFixed(2)})`);
+});
+
+console.log(`  TOTAL EN FACTURAS: €${db.bills.aggregate([{ $group: { _id: null, total: { $sum: "$totalAmount" } } }]).toArray()[0].total.toFixed(2)}\n`);
+
+// ============================================
+// 6. REFERENCIAS CRUZADAS (INTEGRIDAD)
+// ============================================
+console.log("🔗 VERIFICACIÓN DE INTEGRIDAD DE REFERENCIAS:");
+console.log("-".repeat(40));
+
+// Verificar que todas las citas referencian pacientes y dentistas válidos
+const invalidAppointments = db.appointments.aggregate([
+    {
+        $lookup: {
+            from: "patients",
+            localField: "patientId",
+            foreignField: "patientId",
+            as: "patient"
+        }
+    },
+    {
+        $lookup: {
+            from: "dentists",
+            localField: "doctorId",
+            foreignField: "doctorId",
+            as: "doctor"
+        }
+    },
+    {
+        $match: {
+            $or: [
+                { "patient": { $size: 0 } },
+                { "doctor": { $size: 0 } }
+            ]
+        }
+    }
+]).toArray();
+
+if (invalidAppointments.length === 0) {
+    console.log("✅ Todas las citas tienen referencias válidas");
+} else {
+    console.log(`⚠️  ${invalidAppointments.length} citas con referencias inválidas`);
+}
+
+// Verificar que todos los tratamientos referencian pacientes y dentistas válidos
+const invalidTreatments = db.treatments.aggregate([
+    {
+        $lookup: {
+            from: "patients",
+            localField: "patientId",
+            foreignField: "patientId",
+            as: "patient"
+        }
+    },
+    {
+        $lookup: {
+            from: "dentists",
+            localField: "dentistId",
+            foreignField: "doctorId",
+            as: "dentist"
+        }
+    },
+    {
+        $match: {
+            $or: [
+                { "patient": { $size: 0 } },
+                { "dentist": { $size: 0 } }
+            ]
+        }
+    }
+]).toArray();
+
+if (invalidTreatments.length === 0) {
+    console.log("✅ Todos los tratamientos tienen referencias válidas");
+} else {
+    console.log(`⚠️  ${invalidTreatments.length} tratamientos con referencias inválidas`);
+}
+
+// Verificar que todas las facturas referencian citas válidas
+const invalidBills = db.bills.aggregate([
+    {
+        $lookup: {
+            from: "appointments",
+            localField: "appointmentId",
+            foreignField: "appointmentId",
+            as: "appointment"
+        }
+    },
+    {
+        $match: { "appointment": { $size: 0 } }
+    }
+]).toArray();
+
+if (invalidBills.length === 0) {
+    console.log("✅ Todas las facturas tienen referencias válidas\n");
+} else {
+    console.log(`⚠️  ${invalidBills.length} facturas con referencias inválidas\n`);
+}
+
+// ============================================
+// 7. RESUMEN FINAL
+// ============================================
+console.log("═".repeat(40));
+console.log("✅ VERIFICACIÓN COMPLETADA");
+console.log("═".repeat(40));
+console.log("\n¡Los datos de prueba están listos para ser usados!\n");
+

@@ -1,0 +1,130 @@
+// Script para insertar pacientes en la colección 'patients'
+// Base de datos: doctor_db
+
+use doctor_db;
+
+db.patients.insertMany([
+  {
+    "_id": ObjectId(),
+    "patientId": "P001",
+    "name": "Roberto",
+    "surname": "Sánchez Martínez",
+    "email": "roberto.sanchez@email.com",
+    "phoneNumber": "+34912345601",
+    "address": "Calle Principal 123, Madrid 28001",
+    "dateOfBirth": ISODate("1992-04-12T00:00:00Z"),
+    "gender": "MALE",
+    "treatmentIds": []
+  },
+  {
+    "_id": ObjectId(),
+    "patientId": "P002",
+    "name": "Laura",
+    "surname": "González Fernández",
+    "email": "laura.gonzalez@email.com",
+    "phoneNumber": "+34912345602",
+    "address": "Avenida del Paseo 456, Madrid 28003",
+    "dateOfBirth": ISODate("1995-08-20T00:00:00Z"),
+    "gender": "FEMALE",
+    "treatmentIds": []
+  },
+  {
+    "_id": ObjectId(),
+    "patientId": "P003",
+    "name": "Miguel",
+    "surname": "Rodríguez López",
+    "email": "miguel.rodriguez@email.com",
+    "phoneNumber": "+34912345603",
+    "address": "Calle de la República 789, Barcelona 08002",
+    "dateOfBirth": ISODate("1988-12-05T00:00:00Z"),
+    "gender": "MALE",
+    "treatmentIds": []
+  },
+  {
+    "_id": ObjectId(),
+    "patientId": "P004",
+    "name": "Ana",
+    "surname": "García Moreno",
+    "email": "ana.garcia@email.com",
+    "phoneNumber": "+34912345604",
+    "address": "Plaza Mayor 234, Valencia 46001",
+    "dateOfBirth": ISODate("1998-06-14T00:00:00Z"),
+    "gender": "FEMALE",
+    "treatmentIds": []
+  },
+  {
+    "_id": ObjectId(),
+    "patientId": "P005",
+    "name": "David",
+    "surname": "Martínez García",
+    "email": "david.martinez@email.com",
+    "phoneNumber": "+34912345605",
+    "address": "Calle Alcalá 567, Madrid 28009",
+    "dateOfBirth": ISODate("1991-02-28T00:00:00Z"),
+    "gender": "MALE",
+    "treatmentIds": []
+  },
+  {
+    "_id": ObjectId(),
+    "patientId": "P006",
+    "name": "Elena",
+    "surname": "López Ruiz",
+    "email": "elena.lopez@email.com",
+    "phoneNumber": "+34912345606",
+    "address": "Carrera de San Jerónimo 890, Madrid 28014",
+    "dateOfBirth": ISODate("1993-10-11T00:00:00Z"),
+    "gender": "FEMALE",
+    "treatmentIds": []
+  },
+  {
+    "_id": ObjectId(),
+    "patientId": "P007",
+    "name": "Francisco",
+    "surname": "Jiménez Domínguez",
+    "email": "francisco.jimenez@email.com",
+    "phoneNumber": "+34912345607",
+    "address": "Paseo del Prado 123, Madrid 28014",
+    "dateOfBirth": ISODate("1986-07-19T00:00:00Z"),
+    "gender": "MALE",
+    "treatmentIds": []
+  },
+  {
+    "_id": ObjectId(),
+    "patientId": "P008",
+    "name": "Isabel",
+    "surname": "Pérez Sánchez",
+    "email": "isabel.perez@email.com",
+    "phoneNumber": "+34912345608",
+    "address": "Gran Vía 456, Madrid 28013",
+    "dateOfBirth": ISODate("1996-03-22T00:00:00Z"),
+    "gender": "FEMALE",
+    "treatmentIds": []
+  },
+  {
+    "_id": ObjectId(),
+    "patientId": "P009",
+    "name": "Antonio",
+    "surname": "Díaz Fernández",
+    "email": "antonio.diaz@email.com",
+    "phoneNumber": "+34912345609",
+    "address": "Calle de Serrano 789, Madrid 28006",
+    "dateOfBirth": ISODate("1989-09-08T00:00:00Z"),
+    "gender": "MALE",
+    "treatmentIds": []
+  },
+  {
+    "_id": ObjectId(),
+    "patientId": "P010",
+    "name": "Beatriz",
+    "surname": "Vázquez González",
+    "email": "beatriz.vazquez@email.com",
+    "phoneNumber": "+34912345610",
+    "address": "Paseo de la Castellana 234, Madrid 28046",
+    "dateOfBirth": ISODate("1997-11-30T00:00:00Z"),
+    "gender": "FEMALE",
+    "treatmentIds": []
+  }
+]);
+
+print("✅ 10 pacientes insertados correctamente");
+

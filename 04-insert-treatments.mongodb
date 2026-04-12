@@ -1,0 +1,74 @@
+// Script para insertar tratamientos en la colección 'treatments'
+// Base de datos: doctor_db
+
+use doctor_db;
+
+db.treatments.insertMany([
+  {
+    "_id": ObjectId(),
+    "id": "TRT001",
+    "patientId": "P001",
+    "dentistId": "D001",
+    "name": "Ortodoncia con brackets",
+    "description": "Tratamiento completo de ortodoncia con brackets de cerámica. Duración estimada: 24-30 meses. Incluye revisiones mensuales y ajustes."
+  },
+  {
+    "_id": ObjectId(),
+    "id": "TRT002",
+    "patientId": "P002",
+    "dentistId": "D002",
+    "name": "Implante dental unitario",
+    "description": "Colocación de implante dental en posición 14. Incluye corona de porcelana. Duración: 4-6 meses (con oseointegración)."
+  },
+  {
+    "_id": ObjectId(),
+    "id": "TRT003",
+    "patientId": "P003",
+    "dentistId": "D003",
+    "name": "Tratamiento periodontal",
+    "description": "Limpieza profunda y tratamiento de enfermedad periodontal. Incluye raspado y alisado radicular. Se requieren 2-4 sesiones."
+  },
+  {
+    "_id": ObjectId(),
+    "id": "TRT004",
+    "patientId": "P004",
+    "dentistId": "D004",
+    "name": "Endodoncia (tratamiento de conducto)",
+    "description": "Tratamiento de raíz con instrumentación ultrasónica. Diente 16. Incluye corona posterior como se requiera."
+  },
+  {
+    "_id": ObjectId(),
+    "id": "TRT005",
+    "patientId": "P005",
+    "dentistId": "D005",
+    "name": "Blanqueamiento dental profesional",
+    "description": "Blanqueamiento con gel profesional de peróxido de hidrógeno al 35%. Resultados visibles en 1 sesión. Duración del efecto: 6-12 meses."
+  },
+  {
+    "_id": ObjectId(),
+    "id": "TRT006",
+    "patientId": "P006",
+    "dentistId": "D006",
+    "name": "Limpieza y fluorización",
+    "description": "Limpieza profesional con ultrasonidos y fluorización tópica. Tratamiento preventivo realizado cada 6 meses."
+  },
+  {
+    "_id": ObjectId(),
+    "id": "TRT007",
+    "patientId": "P007",
+    "dentistId": "D001",
+    "name": "Ortodoncia invisible con alineadores",
+    "description": "Tratamiento con alineadores transparentes Invisalign. Duración estimada: 18-24 meses. 15-20 sets de alineadores."
+  },
+  {
+    "_id": ObjectId(),
+    "id": "TRT008",
+    "patientId": "P008",
+    "dentistId": "D002",
+    "name": "Rehabilitación oral completa",
+    "description": "Rehabilitación de múltiples dientes con implantes y coronas. Plan de tratamiento de 12-18 meses."
+  }
+]);
+
+print("✅ 8 tratamientos insertados correctamente");
+

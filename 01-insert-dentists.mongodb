@@ -1,0 +1,70 @@
+// Script para insertar dentistas en la colección 'dentists'
+// Base de datos: doctor_db
+
+use doctor_db;
+
+db.dentists.insertMany([
+  {
+    "_id": ObjectId(),
+    "doctorId": "D001",
+    "firstName": "María",
+    "lastName": "García López",
+    "specialization": "Ortodoncia",
+    "phoneNumber": "+34912345678",
+    "email": "maria.garcia@dentistclinic.com",
+    "dateOfBirth": ISODate("1985-03-15T00:00:00Z")
+  },
+  {
+    "_id": ObjectId(),
+    "doctorId": "D002",
+    "firstName": "Juan",
+    "lastName": "Martínez Rodríguez",
+    "specialization": "Implantología",
+    "phoneNumber": "+34923456789",
+    "email": "juan.martinez@dentistclinic.com",
+    "dateOfBirth": ISODate("1982-07-22T00:00:00Z")
+  },
+  {
+    "_id": ObjectId(),
+    "doctorId": "D003",
+    "firstName": "Carmen",
+    "lastName": "Fernández Sánchez",
+    "specialization": "Periodoncia",
+    "phoneNumber": "+34934567890",
+    "email": "carmen.fernandez@dentistclinic.com",
+    "dateOfBirth": ISODate("1988-11-10T00:00:00Z")
+  },
+  {
+    "_id": ObjectId(),
+    "doctorId": "D004",
+    "firstName": "Pedro",
+    "lastName": "López González",
+    "specialization": "Endodoncia",
+    "phoneNumber": "+34945678901",
+    "email": "pedro.lopez@dentistclinic.com",
+    "dateOfBirth": ISODate("1980-05-30T00:00:00Z")
+  },
+  {
+    "_id": ObjectId(),
+    "doctorId": "D005",
+    "firstName": "Sofía",
+    "lastName": "Ruiz Domínguez",
+    "specialization": "Estética Dental",
+    "phoneNumber": "+34956789012",
+    "email": "sofia.ruiz@dentistclinic.com",
+    "dateOfBirth": ISODate("1990-09-18T00:00:00Z")
+  },
+  {
+    "_id": ObjectId(),
+    "doctorId": "D006",
+    "firstName": "Carlos",
+    "lastName": "Moreno Jiménez",
+    "specialization": "Odontología General",
+    "phoneNumber": "+34967890123",
+    "email": "carlos.moreno@dentistclinic.com",
+    "dateOfBirth": ISODate("1987-01-25T00:00:00Z")
+  }
+]);
+
+print("✅ 6 dentistas insertados correctamente");
+

@@ -1,0 +1,180 @@
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - dentist-network
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - dentist-network
+
+  kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    networks:
+      - dentist-network
+
+  config-service:
+    build: ./config-service
+    container_name: config-service
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./doctor-config-repo:/config-repo
+    environment:
+      - SPRING_PROFILES_ACTIVE=native
+    networks:
+      - dentist-network
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - config-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - dentist-network
+
+  auth-service:
+    build: ./auth-service
+    container_name: auth-service
+    ports:
+      - "8090:8090"
+    depends_on:
+      - config-service
+      - mongodb
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/doctor_db
+    networks:
+      - dentist-network
+
+  patient-service:
+    build: ./patient-service
+    container_name: patient-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - config-service
+      - mongodb
+      - kafka
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/doctor_db
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    networks:
+      - dentist-network
+
+  dentist-service:
+    build: ./dentist-service
+    container_name: dentist-service
+    ports:
+      - "8086:8086"
+    depends_on:
+      - config-service
+      - mongodb
+      - kafka
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/doctor_db
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    networks:
+      - dentist-network
+
+  appointment-service:
+    build: ./appointment-service
+    container_name: appointment-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - config-service
+      - mongodb
+      - kafka
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/doctor_db
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    networks:
+      - dentist-network
+
+  treatment-service:
+    build: ./treatment-service
+    container_name: treatment-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - config-service
+      - mongodb
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/doctor_db
+    networks:
+      - dentist-network
+
+  billing-service:
+    build: ./billing-service
+    container_name: billing-service
+    ports:
+      - "8084:8084"
+    depends_on:
+      - config-service
+      - mongodb
+      - kafka
+      - appointment-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/doctor_db
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+    networks:
+      - dentist-network
+
+  notification-service:
+    build: ./notification-service
+    container_name: notification-service
+    ports:
+      - "8085:8085"
+    depends_on:
+      - config-service
+      - mongodb
+      - kafka
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/doctor_db
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    networks:
+      - dentist-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  dentist-network:
+    driver: bridge

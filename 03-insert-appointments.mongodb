@@ -1,0 +1,130 @@
+// Script para insertar citas en la colección 'appointments'
+// Base de datos: doctor_db
+
+use doctor_db;
+
+db.appointments.insertMany([
+  {
+    "_id": ObjectId(),
+    "appointmentId": "APT001",
+    "patientId": "P001",
+    "doctorId": "D001",
+    "appointmentDateTime": "2025-05-10T10:00:00",
+    "reason": "Consulta de ortodoncia",
+    "status": "SCHEDULED",
+    "price": 150.00
+  },
+  {
+    "_id": ObjectId(),
+    "appointmentId": "APT002",
+    "patientId": "P002",
+    "doctorId": "D002",
+    "appointmentDateTime": "2025-05-12T14:30:00",
+    "reason": "Revisión de implante",
+    "status": "SCHEDULED",
+    "price": 200.00
+  },
+  {
+    "_id": ObjectId(),
+    "appointmentId": "APT003",
+    "patientId": "P003",
+    "doctorId": "D003",
+    "appointmentDateTime": "2025-05-15T11:00:00",
+    "reason": "Tratamiento periodontal",
+    "status": "SCHEDULED",
+    "price": 175.00
+  },
+  {
+    "_id": ObjectId(),
+    "appointmentId": "APT004",
+    "patientId": "P004",
+    "doctorId": "D004",
+    "appointmentDateTime": "2025-05-18T09:30:00",
+    "reason": "Endodoncia",
+    "status": "SCHEDULED",
+    "price": 250.00
+  },
+  {
+    "_id": ObjectId(),
+    "appointmentId": "APT005",
+    "patientId": "P005",
+    "doctorId": "D005",
+    "appointmentDateTime": "2025-05-20T15:00:00",
+    "reason": "Limpieza y blanqueamiento",
+    "status": "SCHEDULED",
+    "price": 120.00
+  },
+  {
+    "_id": ObjectId(),
+    "appointmentId": "APT006",
+    "patientId": "P006",
+    "doctorId": "D006",
+    "appointmentDateTime": "2025-05-22T10:30:00",
+    "reason": "Revisión general",
+    "status": "SCHEDULED",
+    "price": 80.00
+  },
+  {
+    "_id": ObjectId(),
+    "appointmentId": "APT007",
+    "patientId": "P007",
+    "doctorId": "D001",
+    "appointmentDateTime": "2025-05-25T13:00:00",
+    "reason": "Colocación de brackets",
+    "status": "SCHEDULED",
+    "price": 1500.00
+  },
+  {
+    "_id": ObjectId(),
+    "appointmentId": "APT008",
+    "patientId": "P008",
+    "doctorId": "D002",
+    "appointmentDateTime": "2025-05-28T16:00:00",
+    "reason": "Consulta inicial implante",
+    "status": "SCHEDULED",
+    "price": 100.00
+  },
+  {
+    "_id": ObjectId(),
+    "appointmentId": "APT009",
+    "patientId": "P009",
+    "doctorId": "D003",
+    "appointmentDateTime": "2025-06-01T11:30:00",
+    "reason": "Sesión periodontal",
+    "status": "SCHEDULED",
+    "price": 150.00
+  },
+  {
+    "_id": ObjectId(),
+    "appointmentId": "APT010",
+    "patientId": "P010",
+    "doctorId": "D004",
+    "appointmentDateTime": "2025-06-05T09:00:00",
+    "reason": "Tratamiento endodóntico",
+    "status": "SCHEDULED",
+    "price": 280.00
+  },
+  {
+    "_id": ObjectId(),
+    "appointmentId": "APT011",
+    "patientId": "P001",
+    "doctorId": "D005",
+    "appointmentDateTime": "2025-06-08T14:00:00",
+    "reason": "Carillas estéticas",
+    "status": "SCHEDULED",
+    "price": 800.00
+  },
+  {
+    "_id": ObjectId(),
+    "appointmentId": "APT012",
+    "patientId": "P002",
+    "doctorId": "D006",
+    "appointmentDateTime": "2025-06-12T10:00:00",
+    "reason": "Extracción dental",
+    "status": "COMPLETED",
+    "price": 200.00
+  }
+]);
+
+print("✅ 12 citas insertadas correctamente");
+

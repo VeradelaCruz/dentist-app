@@ -1,0 +1,12 @@
+package doctor.app.notification_service.enums;
+
+public enum EventType {
+    APPOINTMENT_CREATED,
+    APPOINTMENT_CANCELLED,
+    APPOINTMENT_RESCHEDULED,
+    APPOINTMENT_REMINDER,
+    PAYMENT_CREATED,
+    PAYMENT_CANCELLED,
+    PAYMENT_RESCHEDULED,
+    PAYMENT_REMINDER
+}

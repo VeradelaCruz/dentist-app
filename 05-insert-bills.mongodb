@@ -1,0 +1,108 @@
+// Script para insertar facturas en la colección 'bills'
+// Base de datos: doctor_db
+
+use doctor_db;
+
+db.bills.insertMany([
+  {
+    "_id": ObjectId(),
+    "id": "BILL001",
+    "fullName": "Roberto Sánchez Martínez",
+    "totalAmount": 150.00,
+    "currency": "EUR",
+    "paymentMethod": "CREDIT_CARD",
+    "appointmentId": "APT001",
+    "status": "PAYED",
+    "stripePaymentIntentId": "pi_1A0000000000000001",
+    "stripeCustomerId": "cus_00000001",
+    "createdAt": ISODate("2025-05-10T10:30:00Z"),
+    "paidAt": ISODate("2025-05-10T10:35:00Z")
+  },
+  {
+    "_id": ObjectId(),
+    "id": "BILL002",
+    "fullName": "Laura González Fernández",
+    "totalAmount": 200.00,
+    "currency": "EUR",
+    "paymentMethod": "DEBIT_CARD",
+    "appointmentId": "APT002",
+    "status": "PAYED",
+    "stripePaymentIntentId": "pi_1A0000000000000002",
+    "stripeCustomerId": "cus_00000002",
+    "createdAt": ISODate("2025-05-12T14:45:00Z"),
+    "paidAt": ISODate("2025-05-12T14:50:00Z")
+  },
+  {
+    "_id": ObjectId(),
+    "id": "BILL003",
+    "fullName": "Miguel Rodríguez López",
+    "totalAmount": 175.00,
+    "currency": "EUR",
+    "paymentMethod": "INSURANCE",
+    "appointmentId": "APT003",
+    "status": "PAYMENT_PENDING",
+    "stripePaymentIntentId": "pi_1A0000000000000003",
+    "stripeCustomerId": "cus_00000003",
+    "createdAt": ISODate("2025-05-15T11:15:00Z"),
+    "paidAt": null
+  },
+  {
+    "_id": ObjectId(),
+    "id": "BILL004",
+    "fullName": "Ana García Moreno",
+    "totalAmount": 250.00,
+    "currency": "EUR",
+    "paymentMethod": "CREDIT_CARD",
+    "appointmentId": "APT004",
+    "status": "PAYED",
+    "stripePaymentIntentId": "pi_1A0000000000000004",
+    "stripeCustomerId": "cus_00000004",
+    "createdAt": ISODate("2025-05-18T09:45:00Z"),
+    "paidAt": ISODate("2025-05-18T09:50:00Z")
+  },
+  {
+    "_id": ObjectId(),
+    "id": "BILL005",
+    "fullName": "David Martínez García",
+    "totalAmount": 120.00,
+    "currency": "EUR",
+    "paymentMethod": "PAYPAL",
+    "appointmentId": "APT005",
+    "status": "PAYED",
+    "stripePaymentIntentId": "pi_1A0000000000000005",
+    "stripeCustomerId": "cus_00000005",
+    "createdAt": ISODate("2025-05-20T15:15:00Z"),
+    "paidAt": ISODate("2025-05-20T15:20:00Z")
+  },
+  {
+    "_id": ObjectId(),
+    "id": "BILL006",
+    "fullName": "Elena López Ruiz",
+    "totalAmount": 80.00,
+    "currency": "EUR",
+    "paymentMethod": "CASH",
+    "appointmentId": "APT006",
+    "status": "PAYED",
+    "stripePaymentIntentId": null,
+    "stripeCustomerId": null,
+    "createdAt": ISODate("2025-05-22T10:45:00Z"),
+    "paidAt": ISODate("2025-05-22T11:00:00Z")
+  },
+  {
+    "_id": ObjectId(),
+    "id": "BILL007",
+    "fullName": "Francisco Jiménez Domínguez",
+    "totalAmount": 1500.00,
+    "currency": "EUR",
+    "paymentMethod": "CREDIT_CARD",
+    "appointmentId": "APT007",
+    "status": "PAYMENT_PENDING",
+    "stripePaymentIntentId": "pi_1A0000000000000007",
+    "stripeCustomerId": "cus_00000007",
+    "createdAt": ISODate("2025-05-25T13:30:00Z"),
+    "paidAt": null
+  }
+]);
+
+print("✅ 7 facturas insertadas correctamente");
+

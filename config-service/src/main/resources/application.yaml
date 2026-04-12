@@ -1,0 +1,22 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: file:///C:\Users\maida\Desktop\Proyectos\dentist-app\doctor-config-repo
+          default-label: master
+          search-paths: '{application}'
+---
+spring:
+  profiles: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:///config-repo
