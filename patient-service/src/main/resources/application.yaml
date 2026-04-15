@@ -5,9 +5,6 @@ spring:
   application:
     name: patient-service
 
-  config:
-    import: optional:configserver:http://config-service:8888
-
   data:
     mongodb:
       # En contenedor: SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/doctor_db
