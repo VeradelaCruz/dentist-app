@@ -1,18 +1,18 @@
 spring:
   application:
     name: dentist-service
-server:
-  port: 8086
 
   config:
-    import: optional:configserver:http://config-service:8888
+    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888}
 
-  data:
-    mongodb:
-      # En contenedor: SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/doctor_db
-      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/doctor_db}
+  mongodb:
+    # En contenedor: SPRING_MONGODB_URI=mongodb://mongodb:27017/doctor_db
+    uri: ${SPRING_MONGODB_URI:mongodb://localhost:27017/doctor_db}
 
   kafka:
     # En contenedor: SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
     bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+server:
+  port: 8086
 
