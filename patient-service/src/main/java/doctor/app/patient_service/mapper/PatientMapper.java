@@ -10,6 +10,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface PatientMapper {
+    @Mapping(target = "id", ignore = true)
     Patient toEntity(PatientAddedRequest dto);
 
     @Mapping(target = "fullName", expression = "java(patient.getName() + \" \" + patient.getSurname())")

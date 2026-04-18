@@ -26,7 +26,7 @@ public class PatientService {
 	//---CRUD OPERATIONS----//
 
 	public PatientResponse getPatientById(String patientId) {
-		Patient patient= patientRepository.findById(patientId)
+		Patient patient = patientRepository.findByPatientId(patientId)
 				.orElseThrow(() -> new PatientNotFound(patientId));
 		return patientMapper.toResponse(patient);
 	}
@@ -40,6 +40,7 @@ public class PatientService {
 
 	public Patient createPatient(PatientAddedRequest dto) {
 
+		validatePatientIdUniqueness(dto.getPatientId());
 		validateEmailUniqueness(dto.getEmail());
 
 		Patient patient = patientMapper.toEntity(dto);
@@ -70,13 +71,24 @@ public class PatientService {
 		}
 	}
 
+	private void validatePatientIdUniqueness(String patientId) {
+		if (patientId != null && patientRepository.existsByPatientId(patientId)) {
+			log.warn("Create rejected: patient with patientId={} already exists", patientId);
+			throw new ResponseStatusException(
+					HttpStatus.CONFLICT,
+					"Patient already exists with patientId: " + patientId
+			);
+		}
+	}
+
 	public void deleteById(String patientId) {
 		log.info("Deleting patient, patientId={}", patientId);
 
-		Patient patient = patientRepository.findById(patientId)
-				.orElseThrow(() -> new PatientNotFound(patientId));
+		if (!patientRepository.existsByPatientId(patientId)) {
+			throw new PatientNotFound(patientId);
+		}
 
-		patientRepository.delete(patient);
+		patientRepository.deleteByPatientId(patientId);
 
 		log.info("Patient with patientId={} deleted successfully", patientId);
 	}

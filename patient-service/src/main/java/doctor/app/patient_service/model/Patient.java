@@ -1,17 +1,13 @@
 package doctor.app.patient_service.model;
 
 import doctor.app.patient_service.enums.Gender;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,6 +19,13 @@ import java.util.List;
 public class Patient {
 
     @Id
+    private String id;
+
+    /**
+     * Business identifier used across microservices (e.g. "P001").
+     * MongoDB still has its own internal `_id` stored in {@link #id}.
+     */
+    @Indexed(unique = true)
     private String patientId;
 
     private String name;

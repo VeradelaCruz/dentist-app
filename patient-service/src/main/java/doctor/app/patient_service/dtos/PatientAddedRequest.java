@@ -16,6 +16,10 @@ import java.util.List;
 @AllArgsConstructor
 public class PatientAddedRequest {
 
+    @NotBlank(message = "PatientId is required")
+    @Pattern(regexp = "^P\\d+$", message = "PatientId must follow the format P001")
+    private String patientId;
+
     @NotBlank(message = "Name is required")
     private String name;
 
