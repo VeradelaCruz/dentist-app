@@ -1,4 +1,4 @@
-package doctor.app.patient_service.config;
+package doctor.app.patient_service.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

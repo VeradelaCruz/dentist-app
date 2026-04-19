@@ -40,3 +40,11 @@ spring:
             - Path=/api/billing/**
           filters:
             - StripPrefix=1
+
+        # Dentist Service
+        - id: dentist-service
+          uri: http://dentist-service:8086
+          predicates:
+            - Path=/api/dentists/**
+          filters:
+            - StripPrefix=1
