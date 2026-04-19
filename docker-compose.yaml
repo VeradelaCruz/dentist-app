@@ -72,6 +72,7 @@ services:
       - mongodb
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - CONFIG_SERVER_URL=http://config-service:8888
       - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/doctor_db
     networks:
       - dentist-network
@@ -105,7 +106,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - CONFIG_SERVER_URL=http://config-service:8888
-      - SPRING_MONGODB_URI=mongodb://mongodb:27017/doctor_db
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/doctor_db
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
     networks:
       - dentist-network
@@ -121,7 +122,9 @@ services:
       - kafka
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - CONFIG_SERVER_URL=http://config-service:8888
       - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/doctor_db
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
     networks:
       - dentist-network
 
@@ -135,6 +138,7 @@ services:
       - mongodb
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - CONFIG_SERVER_URL=http://config-service:8888
       - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/doctor_db
     networks:
       - dentist-network
@@ -151,6 +155,7 @@ services:
       - appointment-service
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - CONFIG_SERVER_URL=http://config-service:8888
       - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/doctor_db
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
       - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
@@ -169,6 +174,7 @@ services:
       - kafka
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - CONFIG_SERVER_URL=http://config-service:8888
       - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/doctor_db
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
     networks:
@@ -180,3 +186,4 @@ volumes:
 networks:
   dentist-network:
     driver: bridge
+
