@@ -59,6 +59,7 @@ services:
       - config-service
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - CONFIG_SERVER_URL=http://config-service:8888
     networks:
       - dentist-network
 

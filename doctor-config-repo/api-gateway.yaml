@@ -3,51 +3,59 @@ spring:
     gateway:
       routes:
 
+        # Patient Service
         - id: patient-service
-          uri: lb://patient-service
+          uri: http://patient-service:8081
           predicates:
             - Path=/api/patients/**
           filters:
             - StripPrefix=1
 
+        # Appointment Service
         - id: appointment-service
-          uri: lb://appointment-service
+          uri: http://appointment-service:8082
           predicates:
             - Path=/api/appointments/**
           filters:
             - StripPrefix=1
 
+        # Treatment Service
         - id: treatment-service
-          uri: lb://treatment-service
+          uri: http://treatment-service:8083
           predicates:
             - Path=/api/treatment/**
           filters:
             - StripPrefix=1
 
+        # Billing Service
         - id: billing-service
-          uri: lb://billing-service
+          uri: http://billing-service:8084
           predicates:
             - Path=/api/billing/**
           filters:
             - StripPrefix=1
 
+        # Dentist Service
         - id: dentist-service
-          uri: lb://dentist-service
+          uri: http://dentist-service:8086
           predicates:
             - Path=/api/dentists/**
           filters:
             - StripPrefix=1
 
+        # Notification Service
         - id: notification-service
-          uri: lb://notification-service
+          uri: http://notification-service:8085
           predicates:
             - Path=/api/notifications/**
           filters:
             - StripPrefix=1
 
+        # Auth Service
         - id: auth-service
-          uri: lb://auth-service
+          uri: http://auth-service:8090
           predicates:
             - Path=/api/auth/**
           filters:
             - StripPrefix=1
+
