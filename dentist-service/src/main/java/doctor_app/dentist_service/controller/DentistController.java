@@ -2,6 +2,7 @@ package doctor_app.dentist_service.controller;
 
 import doctor_app.dentist_service.dtos.DentistAddRequest;
 import doctor_app.dentist_service.dtos.DentistResponse;
+import doctor_app.dentist_service.dtos.DentistWithPatients;
 import doctor_app.dentist_service.mapper.DentistMapper;
 import doctor_app.dentist_service.models.Dentist;
 import doctor_app.dentist_service.service.DentistService;
@@ -31,6 +32,12 @@ public class DentistController {
     public ResponseEntity<List<DentistResponse>> getAllDentists() {
         List<DentistResponse> dentists= dentistService.getAll();
         return ResponseEntity.ok(dentistService.getAll());
+    }
+
+    @GetMapping("/{doctorId}/with-patients")
+    public ResponseEntity<DentistWithPatients> getDentistWithPatients(@PathVariable String doctorId) {
+        DentistWithPatients result = dentistService.getDentistWithPatients(doctorId);
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping

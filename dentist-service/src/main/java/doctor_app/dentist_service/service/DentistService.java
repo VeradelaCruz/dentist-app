@@ -1,7 +1,13 @@
 package doctor_app.dentist_service.service;
 
+import doctor_app.dentist_service.client.PatientServiceClient;
+import doctor_app.dentist_service.client.TreatmentServiceClient;
 import doctor_app.dentist_service.dtos.DentistAddRequest;
 import doctor_app.dentist_service.dtos.DentistResponse;
+import doctor_app.dentist_service.dtos.DentistWithPatients;
+import doctor_app.dentist_service.dtos.PatientSimple;
+import doctor_app.dentist_service.dtos.PatientWithTreatment;
+import doctor_app.dentist_service.dtos.TreatmentResponse;
 import doctor_app.dentist_service.mapper.DentistMapper;
 import doctor_app.dentist_service.models.Dentist;
 import doctor_app.dentist_service.repository.DentistRepository;
@@ -13,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -86,5 +93,36 @@ public class DentistService {
         dentistRepository.delete(dentist);
 
         log.info("Dentist with doctorId={} deleted successfully", doctorId);
+    }
+
+    private final PatientServiceClient patientServiceClient;
+    private final TreatmentServiceClient treatmentServiceClient;
+
+    public DentistWithPatients getDentistWithPatients(String doctorId) {
+        // 1. Obtener el dentista
+        Dentist dentist = dentistRepository.findById(doctorId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Dentist not found with id: " + doctorId
+                ));
+
+        // 2. Obtener pacientes del doctor usando Feign
+        List<PatientSimple> patients = patientServiceClient.getPatientsByDoctorId(doctorId);
+
+        // 3. Para cada paciente, obtener tratamientos usando Feign
+        List<PatientWithTreatment> patientsWithTreatments = new ArrayList<>();
+        for (PatientSimple patient : patients) {
+            List<TreatmentResponse> treatments = treatmentServiceClient.getTreatmentsByPatientId(patient.getPatientId());
+            PatientWithTreatment patientWithTreatment = new PatientWithTreatment(
+                patient.getPatientId(), patient.getName(), patient.getSurname(), treatments
+            );
+            patientsWithTreatments.add(patientWithTreatment);
+        }
+
+        // 4. Retornar DTO
+        return new DentistWithPatients(
+            dentist.getDoctorId(), dentist.getFirstName() + " " + dentist.getLastName(), dentist.getSpecialization(),
+            patientsWithTreatments
+        );
     }
 }
