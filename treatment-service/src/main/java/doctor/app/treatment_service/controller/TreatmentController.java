@@ -2,6 +2,8 @@ package doctor.app.treatment_service.controller;
 
 import doctor.app.treatment_service.models.Treatment;
 import doctor.app.treatment_service.service.TreatmentService;
+import doctor.app.treatment_service.dtos.TreatmentResponse;
+import doctor.app.treatment_service.dtos.TreatmentSimple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +23,16 @@ public class TreatmentController {
     @GetMapping("/id/{id}")
     public Treatment getTreatmentById(@PathVariable String id){
         return treatmentService.getTreatmentById(id);
+    }
+
+    @GetMapping(params = "patientId")
+    public List<TreatmentResponse> getTreatmentsByPatientId(@RequestParam String patientId) {
+        return treatmentService.getTreatmentsByPatientId(patientId);
+    }
+
+    @GetMapping(params = "dentistId")
+    public List<TreatmentSimple> getTreatmentsByDentistId(@RequestParam String dentistId) {
+        return treatmentService.getTreatmentsByDentistId(dentistId);
     }
 
     @DeleteMapping("/delete/{id}")

@@ -1,7 +1,10 @@
 package doctor.app.patient_service.service;
 
+import doctor.app.patient_service.client.TreatmentServiceClient;
 import doctor.app.patient_service.dtos.PatientAddedRequest;
 import doctor.app.patient_service.dtos.PatientResponse;
+import doctor.app.patient_service.dtos.PatientSimple;
+import doctor.app.patient_service.dtos.TreatmentSimple;
 import doctor.app.patient_service.exception.PatientNotFound;
 import doctor.app.patient_service.mapper.PatientMapper;
 import doctor.app.patient_service.model.Patient;
@@ -22,6 +25,7 @@ public class PatientService {
 
 	private final PatientRepository patientRepository;
 	private final PatientMapper patientMapper;
+	private final TreatmentServiceClient treatmentServiceClient;
 
 	//---CRUD OPERATIONS----//
 
@@ -91,5 +95,26 @@ public class PatientService {
 		patientRepository.deleteByPatientId(patientId);
 
 		log.info("Patient with patientId={} deleted successfully", patientId);
+	}
+
+	public List<PatientSimple> getPatientsByDoctorId(String doctorId) {
+		log.info("Getting patients for doctorId={}", doctorId);
+
+		// 1. Obtener tratamientos del doctor
+		List<TreatmentSimple> treatments = treatmentServiceClient.getTreatmentsByDentistId(doctorId);
+
+		// 2. Extraer patientIds únicos
+		List<String> patientIds = treatments.stream()
+				.map(TreatmentSimple::getPatientId)
+				.distinct()
+				.toList();
+
+		// 3. Buscar pacientes por IDs
+		List<Patient> patients = patientRepository.findAllByPatientIdIn(patientIds);
+
+		// 4. Mapear a PatientSimple
+		return patients.stream()
+				.map(p -> new PatientSimple(p.getPatientId(), p.getName(), p.getSurname()))
+				.toList();
 	}
 }

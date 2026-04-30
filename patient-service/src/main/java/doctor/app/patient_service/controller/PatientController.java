@@ -2,6 +2,7 @@ package doctor.app.patient_service.controller;
 
 import doctor.app.patient_service.dtos.PatientAddedRequest;
 import doctor.app.patient_service.dtos.PatientResponse;
+import doctor.app.patient_service.dtos.PatientSimple;
 import doctor.app.patient_service.mapper.PatientMapper;
 import doctor.app.patient_service.model.Patient;
 import doctor.app.patient_service.service.PatientService;
@@ -33,6 +34,11 @@ public class PatientController {
 		return ResponseEntity.ok(response);
 	}
 
+	@GetMapping(params = "doctorId")
+	public ResponseEntity<List<PatientSimple>> getPatientsByDoctorId(@RequestParam String doctorId) {
+		List<PatientSimple> patients = patientService.getPatientsByDoctorId(doctorId);
+		return ResponseEntity.ok(patients);
+	}
 
 	@PostMapping
 	public ResponseEntity<Patient> addPatient(@Valid @RequestBody PatientAddedRequest dto) {
@@ -46,4 +52,3 @@ public class PatientController {
 		return ResponseEntity.noContent().build();
 	}
 }
-
